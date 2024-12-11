@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
@@ -8,7 +8,11 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    Alert.alert('Login', `Email: ${email}\nPassword: ${password}`);
+    if (email === 'test@gmail.com' && password === 'test') {
+      navigation.navigate('HomeScreen');
+    } else {
+      Alert.alert('Error', 'Invalid email or password');
+    }
   };
 
   return (
@@ -38,6 +42,12 @@ const LoginScreen = () => {
           onChangeText={setPassword}
           secureTextEntry
         />
+        <TouchableOpacity 
+          style={styles.forgotPasswordContainer}
+          onPress={() => navigation.navigate('ForgotPassword')}
+        >
+          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        </TouchableOpacity>
         <Button title="Login" onPress={handleLogin} />
         
         <View style={styles.dividerContainer}>
@@ -99,6 +109,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#000000',
     color: '#FFFFFF',
+  },
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  forgotPasswordText: {
+    color: '#007AFF',
+    fontSize: 14,
   },
   dividerContainer: {
     flexDirection: 'row',
