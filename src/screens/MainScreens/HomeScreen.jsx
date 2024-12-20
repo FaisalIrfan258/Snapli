@@ -1,136 +1,101 @@
 import React from 'react';
-import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import BottomNavBar from '../../components/BottomNavBar';
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      {/* Main content area */}
       <View style={styles.content}>
-      <Image 
-          source={require('../../assets/bg.png')}
-          style={styles.icon}
-          resizeMode="contain"
-        />
-      </View>
-
-      {/* Header positioned above BottomNavBar */}
-      <View style={styles.header}>
-        <View style={styles.logoRow}>
-          <Image
-            source={require('../../assets/Snaply.png')}
-            style={styles.logo}
+        <Text style={styles.title}>Snaply</Text>
+        <Text style={styles.subtitle}>Create memories together</Text>
+        
+        <View style={styles.cameraCircle}>
+          <Image 
+            source={require('../../assets/icons/camera.png')}
+            style={styles.cameraIcon}
             resizeMode="contain"
           />
-          <TouchableOpacity style={styles.faqButton}>
-            <Image
-              source={require('../../assets/icons/faq.png')}
-              style={styles.faqIcon}
-            />
-          </TouchableOpacity>
         </View>
 
-        <View style={styles.searchBar}>
-          <Image
-            source={require('../../assets/icons/search.png')}
-            style={styles.searchIcon}
-          />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="What's the occasion?"
-            placeholderTextColor="#808080"
-          />
-        </View>
+        <Text style={styles.noEventsText}>No Events Yet</Text>
+        <Text style={styles.startText}>
+          Start by creating your first event{'\n'}and invite friends to join
+        </Text>
 
-        <TouchableOpacity style={styles.addNameButton}>
-          <TextInput
-            style={styles.addNameText}
-            placeholder="Add a Name to Get Started →"
-            placeholderTextColor="#808080"
-            editable={false}
-          />
+        <TouchableOpacity style={styles.createButton}>
+          <Text style={styles.createButtonText}>+ Create First Event</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Bottom Navigation Bar */}
       <BottomNavBar />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#1F1F1F',
-    },
-    content: {
-      flex: 1,
-      justifyContent: 'center', // Vertically center the content
-      alignItems: 'center', // Horizontally center the content
-    },
-    icon: {
-      width: '80%', // Adjust the width as per your preference
-      height: '50%', // Adjust the height as per your preference
-    },
-    header: {
-      justifyContent: 'center',
-      height: 250,
-      paddingHorizontal: 16,
-      paddingBottom: 16,
-      backgroundColor: '#000000',
-      borderTopWidth: 0.5,
-      borderTopColor: '#333333',
-      gap: 20,
-      marginBottom: 60, // Adjust this to set above the BottomNavBar
-    },
-    logoRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    logo: {
-      width: 100,
-      height: 40,
-    },
-    faqButton: {
-      padding: 10,
-    },
-    faqIcon: {
-      width: 24,
-      height: 24,
-      tintColor: '#FFFFFF',
-    },
-    searchBar: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: '#2A2A2A',
-      borderRadius: 12,
-      paddingHorizontal: 12,
-      height: 45,
-    },
-    searchIcon: {
-      width: 18,
-      height: 18,
-      tintColor: '#808080',
-      marginRight: 8,
-    },
-    searchInput: {
-      flex: 1,
-      color: '#FFFFFF',
-      fontSize: 16,
-    },
-    addNameButton: {
-      backgroundColor: '#2A2A2A',
-      borderRadius: 12,
-      height: 45,
-      justifyContent: 'center',
-      paddingHorizontal: 16,
-    },
-    addNameText: {
-      color: '#808080',
-      fontSize: 16,
-    },
-  });
-  
-  export default HomeScreen;
+  container: {
+    flex: 1,
+    backgroundColor: '#1A1720', // Dark purple background
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#8B7FFF', // Purple color for Snaply text
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#9E9E9E',
+    marginBottom: 40,
+  },
+  cameraCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(139, 127, 255, 0.2)', // Semi-transparent purple
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  cameraIcon: {
+    width: 48,
+    height: 48,
+    tintColor: '#8B7FFF',
+  },
+  noEventsText: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 12,
+  },
+  startText: {
+    fontSize: 16,
+    color: '#9E9E9E',
+    textAlign: 'center',
+    marginBottom: 40,
+    lineHeight: 24,
+  },
+  createButton: {
+    backgroundColor: '#8B7FFF',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    width: '100%',
+    maxWidth: 300,
+  },
+  createButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+});
+
+export default HomeScreen;
   
