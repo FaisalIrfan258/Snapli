@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import BottomNavBar from '../../components/BottomNavBar';
+import CreateEventModal from '../../components/CreateEventModal';
 
 const HomeScreen = () => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -22,12 +25,20 @@ const HomeScreen = () => {
           Start by creating your first event{'\n'}and invite friends to join
         </Text>
 
-        <TouchableOpacity style={styles.createButton}>
+        <TouchableOpacity 
+          style={styles.createButton}
+          onPress={() => setIsModalVisible(true)}
+        >
           <Text style={styles.createButtonText}>+ Create First Event</Text>
         </TouchableOpacity>
       </View>
 
       <BottomNavBar />
+      
+      <CreateEventModal 
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
     </View>
   );
 };

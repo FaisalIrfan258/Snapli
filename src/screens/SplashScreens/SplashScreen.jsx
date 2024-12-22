@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import Video from 'react-native-video';
+import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const SplashScreen = () => {
@@ -11,19 +10,12 @@ const SplashScreen = () => {
       navigation.replace('Login');
     }, 4000);
 
-    
     return () => clearTimeout(timer);
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Video
-        source={require('../../assets/SNAPLY.mp4')}
-        style={styles.video}
-        resizeMode="contain"
-        repeat
-        paused={false}
-      />
+      <Text style={styles.text}>SNAPLI</Text>
     </View>
   );
 };
@@ -31,13 +23,14 @@ const SplashScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#1A1720',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  video: {
-    width: '100%',
-    height: '100%',
+  text: {
+    color: '#FFFFFF',
+    fontSize: 36,
+    fontWeight: 'bold',
   },
 });
 

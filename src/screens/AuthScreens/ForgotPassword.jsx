@@ -26,7 +26,7 @@ const ForgotPassword = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#808080"
+          placeholderTextColor="white"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#1A1720',
   },
   logoContainer: {
     alignItems: 'center',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    color: '#808080',
+    color: '#1A1720',
     textAlign: 'center',
     marginBottom: 30,
     paddingHorizontal: 20,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: '#000000',
+    backgroundColor: '#1A1720',
     color: '#FFFFFF',
   },
   backToLogin: {

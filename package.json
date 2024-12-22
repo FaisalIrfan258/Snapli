@@ -10,8 +10,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/slider": "^4.5.5",
     "@react-navigation/native": "^7.0.13",
     "@react-navigation/stack": "^7.0.18",
+    "install": "^0.13.0",
+    "qrcode": "^1.5.4",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-elements": "^3.4.3",
@@ -26,7 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
-    "@babel/runtime": "^7.25.0",
+    "@babel/runtime": "^7.26.0",
     "@react-native-community/cli": "15.0.1",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",

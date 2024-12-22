@@ -29,7 +29,7 @@ const LoginScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#808080"
+          placeholderTextColor="white"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -37,7 +37,7 @@ const LoginScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor="#808080"
+          placeholderTextColor="white"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -78,7 +78,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#1A1720',
   },
   logoContainer: {
     alignItems: 'center',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: '#000000',
+    backgroundColor: '#1A1720',
     color: '#FFFFFF',
   },
   forgotPasswordContainer: {
@@ -126,10 +126,10 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#808080',
+    backgroundColor: '#1A1720',
   },
   orText: {
-    color: '#808080',
+    color: '#1A1720',
     paddingHorizontal: 10,
     fontSize: 14,
   },

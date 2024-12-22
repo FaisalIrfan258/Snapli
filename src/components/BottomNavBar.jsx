@@ -1,43 +1,37 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const BottomNavBar = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const isActive = (screenName) => route.name === screenName;
 
   return (
     <View style={styles.container}>
       <TouchableOpacity 
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate('Camera')}
+        style={styles.tab} 
+        onPress={() => navigation.navigate('Events')}
       >
-        <Image 
-          source={require('../assets/icons/camera.png')}
-          style={styles.icon}
-          resizeMode="contain"
-        />
+        <Text style={[styles.icon, isActive('Events') && styles.activeIcon]}>📅</Text>
+        {/* <Text style={[styles.label, isActive('Events') && styles.activeLabel]}>Events</Text> */}
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate('Create')}
+        style={styles.tab}
+        onPress={() => navigation.navigate('Event')}
       >
-        <Image 
-          source={require('../assets/icons/create.png')}
-          style={styles.icon}
-          resizeMode="contain"
-        />
+        <Text style={[styles.icon, isActive('Camera') && styles.activeIcon]}>📸</Text>
+        {/* <Text style={[styles.label, isActive('Camera') && styles.activeLabel]}>Camera</Text> */}
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate('Settings')}
+        style={styles.tab}
+        onPress={() => navigation.navigate('Profile')}
       >
-        <Image 
-          source={require('../assets/icons/setting.png')}
-          style={styles.icon}
-          resizeMode="contain"
-        />
+        <Text style={[styles.icon, isActive('Profile') && styles.activeIcon]}>👤</Text>
+        {/* <Text style={[styles.label, isActive('Profile') && styles.activeLabel]}>Profile</Text> */}
       </TouchableOpacity>
     </View>
   );
@@ -46,24 +40,30 @@ const BottomNavBar = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#000000',
-    paddingVertical: 10,
-    borderTopWidth: 0.5,
-    borderTopColor: '#333333',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    backgroundColor: '#1A1720',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    paddingBottom: 20,
+    paddingTop: 12,
   },
-  iconContainer: {
-    padding: 10,
+  tab: {
+    flex: 1,
+    alignItems: 'center',
   },
   icon: {
-    width: 24,
-    height: 24,
-    tintColor: '#FFFFFF', // This will make the icons white
+    fontSize: 24,
+    marginBottom: 4,
+    color: '#666',
+  },
+  label: {
+    fontSize: 12,
+    color: '#666',
+  },
+  activeIcon: {
+    color: '#8B7FFF',
+  },
+  activeLabel: {
+    color: '#8B7FFF',
   },
 });
 
