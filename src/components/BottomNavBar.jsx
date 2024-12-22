@@ -12,7 +12,7 @@ const BottomNavBar = () => {
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.tab} 
-        onPress={() => navigation.navigate('Events')}
+        onPress={() => navigation.navigate('HomeScreen')}
       >
         <Text style={[styles.icon, isActive('Events') && styles.activeIcon]}>📅</Text>
         {/* <Text style={[styles.label, isActive('Events') && styles.activeLabel]}>Events</Text> */}
