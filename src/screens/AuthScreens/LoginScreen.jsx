@@ -25,34 +25,42 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.container}>
-        <Text style={styles.title}>Sign In</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="white"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="white"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Sign in to continue</Text>
+        
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#666"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#666"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
+
         <TouchableOpacity 
           style={styles.forgotPasswordContainer}
           onPress={() => navigation.navigate('ForgotPassword')}
         >
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <Button title="Login" onPress={handleLogin} />
+
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Sign In</Text>
+        </TouchableOpacity>
         
         <View style={styles.dividerContainer}>
           <View style={styles.divider} />
-          <Text style={styles.orText}>or continue with</Text>
+          <Text style={styles.orText}>or</Text>
           <View style={styles.divider} />
         </View>
 
@@ -82,83 +90,103 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    paddingTop: 100,
+    paddingTop: 80,
+    marginBottom: 20,
   },
   logo: {
-    width: 200,
-    height: 100,
+    width: 180,
+    height: 90,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: '700',
     color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 32,
+  },
+  inputContainer: {
+    gap: 16,
+    marginBottom: 16,
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
+    height: 52,
+    borderColor: '#333',
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#1A1720',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: '#242129',
     color: '#FFFFFF',
+    fontSize: 16,
   },
   forgotPasswordContainer: {
     alignItems: 'flex-end',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   forgotPasswordText: {
-    color: '#007AFF',
+    color: '#666',
     fontSize: 14,
+  },
+  loginButton: {
+    backgroundColor: '#007AFF',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 24,
   },
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#1A1720',
+    backgroundColor: '#333',
   },
   orText: {
-    color: '#1A1720',
-    paddingHorizontal: 10,
+    color: '#666',
+    paddingHorizontal: 16,
     fontSize: 14,
   },
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    padding: 12,
-    borderRadius: 5,
-    marginBottom: 20,
+    backgroundColor: '#242129',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#333',
   },
   googleIcon: {
     width: 20,
     height: 20,
-    marginRight: 10,
+    marginRight: 12,
   },
   googleButtonText: {
-    color: '#000000',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '500',
   },
   signupContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 24,
   },
   signupText: {
-    color: '#FFFFFF',
+    color: '#666',
     fontSize: 14,
   },
   signupLink: {

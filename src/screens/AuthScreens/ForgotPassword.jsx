@@ -16,30 +16,35 @@ const ForgotPassword = () => {
 
   return (
     <View style={styles.mainContainer}>
-     
       <View style={styles.container}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Text style={styles.description}>
-          Enter your email address and we'll send you a link to reset your password
-        </Text>
-        
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="white"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        
-        <Button title="Send Reset Link" onPress={handleResetPassword} />
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>Reset Password</Text>
+          <Text style={styles.description}>
+            Enter your email address and we'll send you a link to reset your password
+          </Text>
+          
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#666"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </View>
 
-        <TouchableOpacity 
-          style={styles.backToLogin}
-          onPress={() => navigation.navigate('Login')}
-        >
-          <Text style={styles.backToLoginText}>← Back to Login</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.resetButton} onPress={handleResetPassword}>
+            <Text style={styles.resetButtonText}>Send Reset Link</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.backToLogin}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={styles.backToLoginText}>Back to Login</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -50,50 +55,64 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1A1720',
   },
-  logoContainer: {
-    alignItems: 'center',
-    paddingTop: 100,
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
   container: {
     flex: 1,
+    paddingHorizontal: 24,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+  },
+  contentContainer: {
+    alignItems: 'center',
+    width: '100%',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: '700',
     color: '#FFFFFF',
+    marginBottom: 8,
+    textAlign: 'center',
   },
   description: {
-    fontSize: 14,
-    color: '#1A1720',
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 32,
     paddingHorizontal: 20,
   },
+  inputContainer: {
+    width: '100%',
+    marginBottom: 24,
+  },
   input: {
-    height: 40,
-    borderColor: '#ccc',
+    height: 52,
+    borderColor: '#333',
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#1A1720',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: '#242129',
     color: '#FFFFFF',
+    fontSize: 16,
+    width: '100%',
+  },
+  resetButton: {
+    backgroundColor: '#007AFF',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    width: '100%',
+  },
+  resetButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
   backToLogin: {
-    marginTop: 20,
+    marginTop: 24,
     alignItems: 'center',
   },
   backToLoginText: {
     color: '#007AFF',
     fontSize: 16,
+    fontWeight: '500',
   },
 });
 
