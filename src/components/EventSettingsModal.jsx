@@ -10,6 +10,7 @@ import {
   Switch,
   ScrollView
 } from 'react-native';
+import Slider from '@react-native-community/slider';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -20,8 +21,21 @@ const EventSettingsModal = ({
   navigation
 }) => {
   const [photoLimit, setPhotoLimit] = React.useState(10);
-  const [galleryAccess, setGalleryAccess] = React.useState(true);
+  const [guestLimit, setGuestLimit] = React.useState(25);
   const slideAnim = React.useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+
+  const photoLimitOptions = [5, 10, 15, 25, 30];
+  const guestLimitOptions = [25, 50, 75, 100, 150, 200, 250, '250+'];
+
+  const defaultEventData = {
+    occasion: 'Event',
+    eventName: '',
+    location: '',
+    startDate: new Date().toLocaleString(),
+    coverImage: null,
+  };
+
+  const safeEventData = eventData || defaultEventData;
 
   React.useEffect(() => {
     if (visible) {
@@ -40,21 +54,28 @@ const EventSettingsModal = ({
 
   const handleCreateEvent = () => {
     const completeEventData = {
-      occasion: eventData?.occasion || 'Event',
-      eventName: eventData?.eventName || '',
-      location: eventData?.location || '',
-      startDate: eventData?.startDate || '16 December 2024 at 12:24 PM',
-      coverImage: eventData?.coverImage || null,
+      occasion: safeEventData.occasion,
+      eventName: safeEventData.eventName,
+      location: safeEventData.location,
+      startDate: safeEventData.startDate,
+      coverImage: safeEventData.coverImage,
       photoLimit: photoLimit,
-      galleryAccess: galleryAccess,
+      guestLimit: guestLimit,
+      isPremium: guestLimit > 25,
       guestsCount: 1,
       photosCount: 42
     };
     
-    navigation.navigate('CreatedEvent', { 
-      eventData: completeEventData 
-    });
-    onClose(); // Close the modal
+    if (guestLimit > 25) {
+      navigation.navigate('PaymentScreen', { 
+        eventData: completeEventData 
+      });
+    } else {
+      navigation.navigate('CreatedEvent', { 
+        eventData: completeEventData 
+      });
+    }
+    onClose();
   };
 
   return (
@@ -78,47 +99,58 @@ const EventSettingsModal = ({
           </View>
 
           <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-            {/* Progress Dots */}
-            <View style={styles.progressDots}>
-              <View style={[styles.dot, styles.activeDot]} />
-              <View style={[styles.dot, styles.activeDot]} />
-              <View style={[styles.dot, styles.activeDot]} />
-            </View>
 
             {/* Photo Limit Section */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Photo Limit</Text>
+                <Text style={styles.valueDisplay}>{photoLimit} photos</Text>
               </View>
-              <View style={styles.photoLimitContainer}>
-                <Text style={styles.photoLimitValue}>{photoLimit}</Text>
-                <Text style={styles.photoLimitLabel}>photos per person</Text>
+              <Slider
+                style={styles.slider}
+                minimumValue={5}
+                maximumValue={30}
+                step={5}
+                value={photoLimit}
+                onValueChange={setPhotoLimit}
+                minimumTrackTintColor="#8B7FFF"
+                maximumTrackTintColor="rgba(255, 255, 255, 0.1)"
+                thumbTintColor="#8B7FFF"
+              />
+              <View style={styles.sliderLabels}>
+                <Text style={styles.sliderLabel}>5</Text>
+                <Text style={styles.sliderLabel}>30</Text>
               </View>
-              <View style={styles.sliderContainer}>
-                <View style={styles.slider}>
-                  {/* Replace with a proper Slider component */}
-                </View>
-              </View>
-              <Text style={styles.photoLimitHint}>Set to 0 for unlimited photos</Text>
             </View>
 
-            {/* Gallery Access Section */}
+            {/* Guest Limit Section */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Gallery Access</Text>
-                <Switch
-                  value={galleryAccess}
-                  onValueChange={setGalleryAccess}
-                  trackColor={{ false: '#3A3A3A', true: '#8B7FFF' }}
-                  thumbColor="#FFFFFF"
-                />
+                <Text style={styles.sectionTitle}>Number of Guests</Text>
+                <Text style={styles.valueDisplay}>
+                  {guestLimit === 275 ? '250+' : guestLimit} guests
+                </Text>
               </View>
-              <Text style={styles.sectionDescription}>
-                Allow guests to view gallery before event ends
-              </Text>
-              <Text style={styles.galleryHint}>
-                Guests can view photos in real-time as they're taken
-              </Text>
+              <Slider
+                style={styles.slider}
+                minimumValue={25}
+                maximumValue={275}
+                step={25}
+                value={guestLimit}
+                onValueChange={setGuestLimit}
+                minimumTrackTintColor="#8B7FFF"
+                maximumTrackTintColor="rgba(255, 255, 255, 0.1)"
+                thumbTintColor="#8B7FFF"
+              />
+              <View style={styles.sliderLabels}>
+                <Text style={styles.sliderLabel}>25</Text>
+                <Text style={styles.sliderLabel}>250+</Text>
+              </View>
+              {guestLimit > 25 && (
+                <Text style={styles.premiumNote}>
+                  *Premium feature - Requires payment
+                </Text>
+              )}
             </View>
 
             {/* Event Summary Section */}
@@ -127,15 +159,15 @@ const EventSettingsModal = ({
               <View style={styles.summaryContainer}>
                 <View style={styles.summaryRow}>
                   <Text style={styles.summaryLabel}>Occasion</Text>
-                  <Text style={styles.summaryValue}>{eventData.occasion}</Text>
+                  <Text style={styles.summaryValue}>{safeEventData.occasion}</Text>
                 </View>
                 <View style={styles.summaryRow}>
                   <Text style={styles.summaryLabel}>Event Name</Text>
-                  <Text style={styles.summaryValue}>{eventData.eventName}</Text>
+                  <Text style={styles.summaryValue}>{safeEventData.eventName}</Text>
                 </View>
                 <View style={styles.summaryRow}>
                   <Text style={styles.summaryLabel}>Location</Text>
-                  <Text style={styles.summaryValue}>{eventData.location}</Text>
+                  <Text style={styles.summaryValue}>{safeEventData.location}</Text>
                 </View>
               </View>
             </View>
@@ -200,21 +232,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  progressDots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 30,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#444',
-    marginHorizontal: 4,
-  },
-  activeDot: {
-    backgroundColor: '#8B7FFF',
-  },
+ 
   section: {
     marginBottom: 30,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -256,9 +274,23 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   slider: {
-    height: 4,
-    backgroundColor: '#8B7FFF',
-    borderRadius: 2,
+    width: '100%',
+    height: 40,
+    marginVertical: 10,
+  },
+  sliderLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 4,
+  },
+  sliderLabel: {
+    color: '#666',
+    fontSize: 14,
+  },
+  valueDisplay: {
+    color: '#8B7FFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
   sectionDescription: {
     fontSize: 16,
@@ -319,6 +351,38 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '600',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginVertical: 15,
+  },
+  optionButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  selectedOption: {
+    backgroundColor: 'rgba(139, 127, 255, 0.2)',
+    borderColor: '#8B7FFF',
+  },
+  optionText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  selectedOptionText: {
+    color: '#8B7FFF',
+    fontWeight: '600',
+  },
+  premiumNote: {
+    color: '#8B7FFF',
+    fontSize: 14,
+    marginTop: 12,
+    textAlign: 'center',
   },
 });
 

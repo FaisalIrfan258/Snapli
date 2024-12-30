@@ -35,6 +35,16 @@ const EventDetailsModal = ({ visible, onClose, eventType }) => {
   // Animation value for sliding
   const slideAnim = React.useRef(new Animated.Value(SCREEN_HEIGHT)).current;
 
+  // Add this state to store event details
+  const [eventDetails, setEventDetails] = React.useState({
+    occasion: eventType || 'Event',
+    eventName: '',
+    location: '',
+    startDate: new Date().toLocaleString(),
+    endDate: new Date().toLocaleString(),
+    coverImage: null,
+  });
+
   React.useEffect(() => {
     if (visible) {
       Animated.spring(slideAnim, {
@@ -68,8 +78,18 @@ const EventDetailsModal = ({ visible, onClose, eventType }) => {
   const sizes = getSizes();
 
   const handleContinue = () => {
+    const details = {
+      occasion: eventType,
+      eventName: eventName,
+      location: location,
+      startDate: startDate.toLocaleString(),
+      endDate: endDate.toLocaleString(),
+      coverImage: coverPhoto,
+    };
+    
+    setEventDetails(details);
     setShowSettings(true);
-    onClose(); // Close details modal
+    onClose();
   };
 
   // Updated image picker function
@@ -305,14 +325,11 @@ const EventDetailsModal = ({ visible, onClose, eventType }) => {
 
       <EventSettingsModal 
         visible={showSettings}
-        onClose={() => setShowSettings(false)}
-        navigation={navigation}
-        eventData={{
-          occasion: eventType,
-          eventName: eventName,
-          location: location,
-          startDate: '16 December 2024 at 12:24 PM',
+        onClose={() => {
+          setShowSettings(false);
         }}
+        navigation={navigation}
+        eventData={eventDetails}
       />
     </>
   );
