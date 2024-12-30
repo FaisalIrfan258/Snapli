@@ -10,57 +10,127 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const EventCard = ({ event, onPress }) => (
-  <TouchableOpacity style={styles.eventCard} onPress={onPress}>
-    {event.coverImage ? (
-      <Image source={event.coverImage} style={styles.eventImage} />
-    ) : (
-      <View style={styles.eventImagePlaceholder}>
-        <Image 
-          source={require('../../assets/icons/gift.png')} 
-          style={styles.placeholderIcon}
-        />
-      </View>
-    )}
-    
-    <View style={styles.eventInfo}>
-      <View style={styles.eventTypeContainer}>
-        <Text style={styles.eventType}>{event.occasion}</Text>
-      </View>
-      
-      <Text style={styles.eventName}>{event.eventName}</Text>
-      
-      <View style={styles.eventDetails}>
-        <View style={styles.detailItem}>
+const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress }) => (
+  <View>
+    <TouchableOpacity style={styles.eventCard} onPress={onPress}>
+      {event.coverImage ? (
+        <Image source={event.coverImage} style={styles.eventImage} />
+      ) : (
+        <View style={styles.eventImagePlaceholder}>
           <Image 
-            source={require('../../assets/icons/calender.png')}
-            style={styles.detailIcon}
+            source={require('../../assets/icons/gift.png')} 
+            style={styles.placeholderIcon}
           />
-          <Text style={styles.detailText}>{event.date}</Text>
+        </View>
+      )}
+      
+      <View style={styles.eventInfo}>
+        <View style={styles.eventTypeContainer}>
+          <Text style={styles.eventType}>{event.occasion}</Text>
         </View>
         
-        <View style={styles.detailItem}>
-          <Image 
-            source={require('../../assets/icons/location.png')}
-            style={styles.detailIcon}
-          />
-          <Text style={styles.detailText}>{event.location}</Text>
+        <Text style={styles.eventName}>{event.eventName}</Text>
+        
+        <View style={styles.eventDetails}>
+          <View style={styles.detailItem}>
+            <Image 
+              source={require('../../assets/icons/calender.png')}
+              style={styles.detailIcon}
+            />
+            <Text style={styles.detailText}>{event.date}</Text>
+          </View>
+          
+          <View style={styles.detailItem}>
+            <Image 
+              source={require('../../assets/icons/clock.png')}
+              style={styles.detailIcon}
+            />
+            <Text style={styles.detailText}>{event.time}</Text>
+          </View>
+          
+          <View style={styles.detailItem}>
+            <Image 
+              source={require('../../assets/icons/location.png')}
+              style={styles.detailIcon}
+            />
+            <Text style={styles.detailText}>{event.location}</Text>
+          </View>
+        </View>
+
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Image 
+              source={require('../../assets/icons/guests.png')}
+              style={styles.statsIcon}
+            />
+            <Text style={styles.statsText}>{event.guestsCount} guests</Text>
+          </View>
+          
+          <View style={styles.statItem}>
+            <Image 
+              source={require('../../assets/icons/camera.png')}
+              style={styles.statsIcon}
+            />
+            <Text style={styles.statsText}>{event.photoLimit} photos/guest</Text>
+          </View>
         </View>
       </View>
+    </TouchableOpacity>
 
-      <View style={styles.guestsContainer}>
+    <View style={styles.actionButtons}>
+      <TouchableOpacity 
+        style={styles.actionButton} 
+        onPress={onCameraPress}
+      >
         <Image 
-          source={require('../../assets/icons/guests.png')}
-          style={styles.guestsIcon}
+          source={require('../../assets/icons/camera.png')}
+          style={styles.actionIcon}
         />
-        <Text style={styles.guestsCount}>{event.guestsCount}</Text>
-      </View>
+        <Text style={styles.actionText}>Camera</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.actionButton} 
+        onPress={onGalleryPress}
+      >
+        <Image 
+          source={require('../../assets/icons/gallery.png')}
+          style={styles.actionIcon}
+        />
+        <Text style={styles.actionText}>Gallery</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.actionButton} 
+        onPress={onInvitePress}
+      >
+        <Image 
+          source={require('../../assets/icons/invite.png')}
+          style={styles.actionIcon}
+        />
+        <Text style={styles.actionText}>Invite</Text>
+      </TouchableOpacity>
     </View>
-  </TouchableOpacity>
+  </View>
 );
 
 const EventsScreen = () => {
   const navigation = useNavigation();
+
+  const handleCameraPress = (event) => {
+    // Handle camera action
+    navigation.navigate('Camera', { eventId: event.id });
+  };
+
+  const handleGalleryPress = (event) => {
+    // Handle gallery action
+    navigation.navigate('Gallery', { eventId: event.id });
+  };
+
+  const handleInvitePress = (event) => {
+    // Open invite modal
+    navigation.navigate('InviteGuests', { eventId: event.id });
+  };
 
   // Sample event data
   const events = [
@@ -69,8 +139,10 @@ const EventsScreen = () => {
       occasion: 'Birthday',
       eventName: 'FB',
       date: '16-Dec-2024',
+      time: '12:24 PM',
       location: 'NY',
       guestsCount: 1,
+      photoLimit: 10,
       coverImage: require('../../assets/icons/camera.png'),
     },
     // Add more events as needed
@@ -101,6 +173,9 @@ const EventsScreen = () => {
               key={event.id}
               event={event}
               onPress={() => navigation.navigate('Event', { eventData: event })}
+              onCameraPress={() => handleCameraPress(event)}
+              onGalleryPress={() => handleGalleryPress(event)}
+              onInvitePress={() => handleInvitePress(event)}
             />
           ))}
         </View>
@@ -225,19 +300,49 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
     fontSize: 14,
   },
-  guestsContainer: {
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  statItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  guestsIcon: {
+  statsIcon: {
     width: 16,
     height: 16,
     tintColor: '#9E9E9E',
     marginRight: 8,
   },
-  guestsCount: {
+  statsText: {
     color: '#9E9E9E',
     fontSize: 14,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#2A2630',
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    paddingVertical: 12,
+    marginTop: -1,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  actionButton: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  actionIcon: {
+    width: 24,
+    height: 24,
+    tintColor: '#8B7FFF',
+    marginBottom: 4,
+  },
+  actionText: {
+    color: '#FFFFFF',
+    fontSize: 12,
   },
 });
 
