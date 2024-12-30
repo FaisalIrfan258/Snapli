@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,6 +23,31 @@ const MenuItem = ({ icon, title, onPress }) => (
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: () => {
+            // Add any logout logic here (clear tokens, etc.)
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }],
+            });
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -31,7 +57,10 @@ const ProfileScreen = () => {
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
             <Text style={styles.avatarText}>J</Text>
-            <TouchableOpacity style={styles.cameraButton}>
+            <TouchableOpacity 
+              style={styles.cameraButton}
+              onPress={() => navigation.navigate('EditProfile')}
+            >
               <Text style={styles.cameraIcon}>📷</Text>
             </TouchableOpacity>
           </View>
@@ -46,17 +75,12 @@ const ProfileScreen = () => {
             <MenuItem 
               icon={<Text style={styles.menuIcon}>👤</Text>}
               title="Edit Profile"
-              onPress={() => {}}
-            />
-            <MenuItem 
-              icon={<Text style={styles.menuIcon}>🔔</Text>}
-              title="Notifications"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('EditProfile')}
             />
             <MenuItem 
               icon={<Text style={styles.menuIcon}>🔒</Text>}
               title="Privacy"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('Privacy')}
             />
           </View>
         </View>
@@ -68,17 +92,17 @@ const ProfileScreen = () => {
             <MenuItem 
               icon={<Text style={styles.menuIcon}>❓</Text>}
               title="Help Center"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('Help')}
             />
             <MenuItem 
               icon={<Text style={styles.menuIcon}>✉️</Text>}
               title="Contact Us"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('ContactUs')}
             />
             <MenuItem 
               icon={<Text style={styles.menuIcon}>📜</Text>}
               title="Terms & Privacy"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('Terms')}
             />
           </View>
         </View>
@@ -86,9 +110,7 @@ const ProfileScreen = () => {
         {/* Logout Button */}
         <TouchableOpacity 
           style={styles.logoutButton}
-          onPress={() => {
-            // Handle logout logic here
-          }}
+          onPress={handleLogout}
         >
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
