@@ -7,8 +7,10 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Camera } from 'react-native-vision-camera';
 
 const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress }) => (
   <View>
@@ -117,9 +119,19 @@ const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePres
 const EventsScreen = () => {
   const navigation = useNavigation();
 
-  const handleCameraPress = (event) => {
-    // Handle camera action
-    navigation.navigate('Camera', { eventId: event.id });
+  const handleCameraPress = async (event) => {
+    try {
+      const cameraPermission = await Camera.getCameraPermissionStatus();
+      
+      navigation.navigate('Camera', {
+        eventId: event.id,
+        photoLimit: event.photoLimit,
+        photosRemaining: event.photoLimit
+      });
+    } catch (error) {
+      console.error('Error handling camera press:', error);
+      Alert.alert('Error', 'Failed to open camera');
+    }
   };
 
   const handleGalleryPress = (event) => {

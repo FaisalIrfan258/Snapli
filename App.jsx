@@ -16,7 +16,20 @@ import ContactUsScreen from './src/screens/MainScreens/ContactUsScreen';
 import PrivacyScreen from './src/screens/MainScreens/PrivacyScreen';
 import TermsScreen from './src/screens/MainScreens/TermsScreen';
 import HelpCenterScreen from './src/screens/MainScreens/HelpCenterScreen';
+import CameraScreen from './src/screens/MainScreens/CameraScreen';
+import { Camera } from 'react-native-vision-camera';
 const Stack = createStackNavigator();
+
+// Initialize camera permissions at app startup
+const initializeCameraPermissions = async () => {
+  const cameraPermission = await Camera.getCameraPermissionStatus();
+  if (cameraPermission === 'not-determined') {
+    await Camera.requestCameraPermission();
+  }
+};
+
+// Call this in your app's initialization
+initializeCameraPermissions();
 
 const App = () => {
   return (
@@ -108,6 +121,13 @@ const App = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+        name="Camera"
+        component={CameraScreen}
+        options={{
+          headerShown: false,
+          }}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );
