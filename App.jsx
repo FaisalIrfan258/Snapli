@@ -9,27 +9,17 @@ import ForgotPassword from './src/screens/AuthScreens/ForgotPassword';
 import HomeScreen from './src/screens/MainScreens/HomeScreen';
 import EventScreen from './src/screens/MainScreens/EventScreen';
 import ProfileScreen from './src/screens/MainScreens/ProfileScreen';
-import CreatedEventScreen from './src/screens/MainScreens/ CreatedEventScreen';
-import EditProfileScreen from './src/screens/MainScreens/ EditProfileScreen';
+import CreatedEventScreen from './src/screens/MainScreens/CreatedEventScreen';
+import EditProfileScreen from './src/screens/MainScreens/EditProfileScreen';
 // import NotificationsScreen from './src/screens/MainScreens/NotificationsScreen';
 import ContactUsScreen from './src/screens/MainScreens/ContactUsScreen';
 import PrivacyScreen from './src/screens/MainScreens/PrivacyScreen';
 import TermsScreen from './src/screens/MainScreens/TermsScreen';
 import HelpCenterScreen from './src/screens/MainScreens/HelpCenterScreen';
-import CameraScreen from './src/screens/MainScreens/CameraScreen';
-import { Camera } from 'react-native-vision-camera';
+import GalleryScreen from './src/screens/MainScreens/GalleryScreen';
+
 const Stack = createStackNavigator();
 
-// Initialize camera permissions at app startup
-const initializeCameraPermissions = async () => {
-  const cameraPermission = await Camera.getCameraPermissionStatus();
-  if (cameraPermission === 'not-determined') {
-    await Camera.requestCameraPermission();
-  }
-};
-
-// Call this in your app's initialization
-initializeCameraPermissions();
 
 const App = () => {
   return (
@@ -122,12 +112,12 @@ const App = () => {
           }}
         />
         <Stack.Screen
-        name="Camera"
-        component={CameraScreen}
-        options={{
-          headerShown: false,
+          name="Gallery"
+          component={GalleryScreen}
+          options={{
+            headerShown: false
           }}
-          />
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
