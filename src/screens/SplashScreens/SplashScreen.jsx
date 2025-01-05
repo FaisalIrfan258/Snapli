@@ -15,7 +15,7 @@ const SplashScreen = () => {
     loadFonts();
 
     const timer = setTimeout(() => {
-      navigation.replace('Login');
+      navigation.replace('HomeScreen');
     }, 4000);
 
     return () => clearTimeout(timer);

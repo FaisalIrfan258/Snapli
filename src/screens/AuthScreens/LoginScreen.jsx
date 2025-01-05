@@ -11,27 +11,27 @@ const LoginScreen = () => {
     GoogleSignin.configure({
       webClientId: '663731162238-a31vkeacnfsset8jdk8sh5vi9t438954.apps.googleusercontent.com',
     });
-    
   }, []);
 
-  const handleGoogleLogin = async () => {
+  const onGoogleButtonPress = async () => {
     try {
-      // Check if the device supports Google Play
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const signInResult = await GoogleSignin.signIn();
+      
+      console.log('Sign-In Result:', signInResult);
 
-      // Get the user's ID token
-      const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential
+      const idToken = signInResult.data.idToken;
+      if (!idToken) {
+        throw new Error('No ID token found');
+      }
+      
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Sign-in the user
       await auth().signInWithCredential(googleCredential);
-      Alert.alert('Success', 'You are now signed in!');
-      navigation.navigate('HomeScreen'); // Replace 'Home' with your target screen
+      
+      navigation.navigate('HomeScreen');
     } catch (error) {
-      console.error(error);
-      Alert.alert('Error', error.message);
+      console.error('Login Error:', error);
+      Alert.alert('Login Error', error.message);
     }
   };
 
@@ -45,14 +45,23 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.container}>
+        <Text style={styles.title}>Welcome Back!</Text>
         <Text style={styles.subtitle}>Sign in with Google to continue</Text>
-        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-          <Image
-            source={require('../../assets/google-icon.png')}
+        
+        <TouchableOpacity style={styles.googleButton} onPress={onGoogleButtonPress}>
+          <Image 
+            source={require('../../assets/google-icon.png')} 
             style={styles.googleIcon}
           />
           <Text style={styles.googleButtonText}>Sign in with Google</Text>
         </TouchableOpacity>
+
+        <View style={styles.signupContainer}>
+          <Text style={styles.signupText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={styles.signupLink}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

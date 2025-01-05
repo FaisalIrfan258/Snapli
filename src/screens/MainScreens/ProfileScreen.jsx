@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,10 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const MenuItem = ({ icon, title, onPress }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress}>
@@ -22,6 +24,14 @@ const MenuItem = ({ icon, title, onPress }) => (
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const currentUser = auth().currentUser;
+    if (currentUser) {
+      setUser(currentUser);
+    }
+  }, []);
 
   const handleLogout = () => {
     Alert.alert(
@@ -35,8 +45,8 @@ const ProfileScreen = () => {
         {
           text: 'Logout',
           style: 'destructive',
-          onPress: () => {
-            // Add any logout logic here (clear tokens, etc.)
+          onPress: async () => {
+            await auth().signOut(); // Log out the user
             navigation.reset({
               index: 0,
               routes: [{ name: 'Login' }],
@@ -56,38 +66,39 @@ const ProfileScreen = () => {
         {/* Profile Info */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>J</Text>
-            <TouchableOpacity 
-              style={styles.cameraButton}
-              onPress={() => navigation.navigate('EditProfile')}
-            >
-              <Text style={styles.cameraIcon}>📷</Text>
-            </TouchableOpacity>
+            {user && user.photoURL ? (
+              <Image
+                source={{ uri: user.photoURL }}
+                style={styles.avatarImage}
+              />
+            ) : (
+              <Text style={styles.avatarText}>{user ? user.displayName.charAt(0) : 'J'}</Text>
+            )}
           </View>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.email}>john.doe@example.com</Text>
+          <Text style={styles.name}>{user ? user.displayName : 'John Doe'}</Text>
+          <Text style={styles.email}>{user ? user.email : 'john.doe@example.com'}</Text>
         </View>
 
         {/* Account Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
+          {/* <Text style={styles.sectionTitle}>Account</Text> */}
           <View style={styles.menuContainer}>
-            <MenuItem 
+            {/* <MenuItem 
               icon={<Text style={styles.menuIcon}>👤</Text>}
               title="Edit Profile"
               onPress={() => navigation.navigate('EditProfile')}
-            />
-            <MenuItem 
+            /> */}
+            {/* <MenuItem 
               icon={<Text style={styles.menuIcon}>🔒</Text>}
               title="Privacy"
               onPress={() => navigation.navigate('Privacy')}
-            />
+            /> */}
           </View>
         </View>
 
         {/* Support Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
+          {/* <Text style={styles.sectionTitle}>Support</Text> */}
           <View style={styles.menuContainer}>
             <MenuItem 
               icon={<Text style={styles.menuIcon}>❓</Text>}
@@ -143,24 +154,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  avatarImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
   avatarText: {
     fontSize: 32,
     color: '#8B7FFF',
     fontWeight: '600',
-  },
-  cameraButton: {
-    position: 'absolute',
-    right: -4,
-    bottom: -4,
-    backgroundColor: '#8B7FFF',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cameraIcon: {
-    fontSize: 16,
   },
   name: {
     fontSize: 24,
@@ -174,12 +176,6 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    color: '#9E9E9E',
-    marginBottom: 16,
-    paddingHorizontal: 20,
   },
   menuContainer: {
     backgroundColor: '#2A2630',
