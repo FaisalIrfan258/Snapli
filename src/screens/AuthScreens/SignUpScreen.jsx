@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleSignup = () => {
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-    Alert.alert('Signup', `Email: ${email}\nPassword: ${password}`);
+  const handleGoogleSignup = () => {
+    Alert.alert('Google Sign-In', 'Sign in with Google');
   };
 
   return (
@@ -30,44 +23,7 @@ const SignupScreen = () => {
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Sign up to get started</Text>
           
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#666"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#666"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              placeholderTextColor="#666"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-            />
-          </View>
-
-          <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-            <Text style={styles.signupButtonText}>Create Account</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.dividerContainer}>
-            <View style={styles.divider} />
-            <Text style={styles.orText}>or</Text>
-            <View style={styles.divider} />
-          </View>
-
-          <TouchableOpacity style={styles.googleButton}>
+          <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignup}>
             <Image 
               source={require('../../assets/google-icon.png')} 
               style={styles.googleIcon}

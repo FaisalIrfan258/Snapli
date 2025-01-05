@@ -4,8 +4,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from './src/screens/SplashScreens/SplashScreen';
 import LoginScreen from './src/screens/AuthScreens/LoginScreen';
-import SignUpScreen from './src/screens/AuthScreens/SignUpScreen';
-import ForgotPassword from './src/screens/AuthScreens/ForgotPassword';
+// import SignUpScreen from './src/screens/AuthScreens/SignUpScreen';
+// import ForgotPassword from './src/screens/AuthScreens/ForgotPassword';
 import HomeScreen from './src/screens/MainScreens/HomeScreen';
 import EventScreen from './src/screens/MainScreens/EventScreen';
 import ProfileScreen from './src/screens/MainScreens/ProfileScreen';
@@ -35,7 +35,7 @@ const App = () => {
           component={LoginScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Signup"
           component={SignUpScreen}
           options={{headerShown: false}}
@@ -44,7 +44,7 @@ const App = () => {
           name="ForgotPassword"
           component={ForgotPassword}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
