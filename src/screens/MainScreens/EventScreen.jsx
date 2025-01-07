@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import InviteGuestsModal from '../../components/InviteGuestsModal';
+import CreateEventModal from '../../components/CreateEventModal';
 
 const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress }) => (
   <View>
@@ -117,6 +119,9 @@ const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePres
 
 const EventsScreen = () => {
   const navigation = useNavigation();
+  const [createEventModalVisible, setCreateEventModalVisible] = useState(false);
+  const [inviteGuestsModalVisible, setInviteGuestsModalVisible] = useState(false);
+  const [selectedEventData, setSelectedEventData] = useState(null);
 
   const handleCameraPress = async (event) => {
    
@@ -128,8 +133,12 @@ const EventsScreen = () => {
   };
 
   const handleInvitePress = (event) => {
-    // Open invite modal
-    navigation.navigate('InviteGuests', { eventId: event.id });
+    setSelectedEventData(event);
+    setInviteGuestsModalVisible(true);
+  };
+
+  const handleCreateEvent = () => {
+    setCreateEventModalVisible(true);
   };
 
   // Sample event data
@@ -145,6 +154,7 @@ const EventsScreen = () => {
       photoLimit: 10,
       coverImage: require('../../assets/icons/camera.png'),
     },
+    
     // Add more events as needed
   ];
 
@@ -158,9 +168,7 @@ const EventsScreen = () => {
 
         <TouchableOpacity 
           style={styles.createButton}
-          onPress={() => {
-            // Show create event modal
-          }}
+          onPress={handleCreateEvent}
         >
           <Text style={styles.createButtonIcon}>+</Text>
           <Text style={styles.createButtonText}>Create New Event</Text>
@@ -172,7 +180,7 @@ const EventsScreen = () => {
             <EventCard 
               key={event.id}
               event={event}
-              onPress={() => navigation.navigate('Event', { eventData: event })}
+              onPress={() => handleInvitePress(event)}
               onCameraPress={() => handleCameraPress(event)}
               onGalleryPress={() => handleGalleryPress(event)}
               onInvitePress={() => handleInvitePress(event)}
@@ -180,6 +188,17 @@ const EventsScreen = () => {
           ))}
         </View>
       </ScrollView>
+
+      <CreateEventModal 
+        visible={createEventModalVisible}
+        onClose={() => setCreateEventModalVisible(false)}
+      />
+
+      <InviteGuestsModal 
+        visible={inviteGuestsModalVisible}
+        onClose={() => setInviteGuestsModalVisible(false)}
+        eventData={selectedEventData}
+      />
     </SafeAreaView>
   );
 };
@@ -212,9 +231,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#8B7FFF',
-    marginHorizontal: 20,
-    padding: 16,
-    borderRadius: 30,
+    marginHorizontal: 50,
+    padding: 12,
+    borderRadius: 320,
     marginBottom: 32,
   },
   createButtonIcon: {
@@ -326,7 +345,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
     paddingVertical: 12,
-    marginTop: -1,
+    marginTop: 0,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.1)',
   },

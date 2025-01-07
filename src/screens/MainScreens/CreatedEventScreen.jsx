@@ -23,11 +23,11 @@ const CreatedEventScreen = ({ route, navigation }) => {
       
       {/* Cover Image */}
       <Image
-        source={eventData.coverImage || require('../../assets/icons/camera.png')}
+        source={eventData.coverImage ? { uri: eventData.coverImage } : require('../../assets/icons/camera.png')}
         style={styles.coverImage}
       />
 
-      {/* Event Details */}
+      {/* Event Details Card */}
       <View style={styles.eventDetails}>
         <View style={styles.eventTypeContainer}>
           <Text style={styles.eventType}>{eventData.occasion || 'Event'}</Text>
@@ -35,22 +35,11 @@ const CreatedEventScreen = ({ route, navigation }) => {
 
         <Text style={styles.eventName}>{eventData.eventName || 'Untitled Event'}</Text>
 
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{eventData.guestsCount || 1}</Text>
-            <Text style={styles.statLabel}>Guests</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{eventData.photosCount || 42}</Text>
-            <Text style={styles.statLabel}>Photos</Text>
-          </View>
-        </View>
-
         <View style={styles.infoSection}>
           <View style={styles.infoRow}>
             <Image 
               source={require('../../assets/icons/calender.png')}
-              style={[styles.infoIcon, { tintColor: '#8B7FFF' }]}
+              style={styles.infoIcon}
             />
             <View>
               <Text style={styles.infoLabel}>Date & Time</Text>
@@ -61,7 +50,7 @@ const CreatedEventScreen = ({ route, navigation }) => {
           <View style={styles.infoRow}>
             <Image 
               source={require('../../assets/icons/location.png')}
-              style={[styles.infoIcon, { tintColor: '#8B7FFF' }]}
+              style={styles.infoIcon}
             />
             <View>
               <Text style={styles.infoLabel}>Location</Text>
@@ -71,14 +60,23 @@ const CreatedEventScreen = ({ route, navigation }) => {
 
           <View style={styles.infoRow}>
             <Image 
-              source={require('../../assets/icons/gallery.png')}
-              style={[styles.infoIcon, { tintColor: '#8B7FFF' }]}
+              source={require('../../assets/icons/photo-limit.png')}
+              style={styles.infoIcon}
             />
             <View>
-              <Text style={styles.infoLabel}>Gallery Access</Text>
-              <Text style={styles.infoValue}>
-                {eventData.galleryAccess ? 'Enabled' : 'Disabled'}
-              </Text>
+              <Text style={styles.infoLabel}>Photo Limit</Text>
+              <Text style={styles.infoValue}>{eventData.photoLimit || 10}</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Image 
+              source={require('../../assets/icons/guests.png')}
+              style={styles.infoIcon}
+            />
+            <View>
+              <Text style={styles.infoLabel}>Number of Guests</Text>
+              <Text style={styles.infoValue}>{eventData.guestLimit || 25}</Text>
             </View>
           </View>
         </View>
@@ -87,26 +85,9 @@ const CreatedEventScreen = ({ route, navigation }) => {
         <View style={styles.actionButtons}>
           <TouchableOpacity 
             style={[styles.actionButton, styles.inviteButton]}
-            onPress={() => setShowInviteModal(true)}
+            onPress={() => navigation.navigate('Event')}
           >
-            <Image 
-              source={require('../../assets/icons/invite.png')}
-              style={styles.actionButtonIcon}
-            />
-            <Text style={styles.actionButtonText}>Invite Guests</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.actionButton, styles.galleryButton]}
-            onPress={() => {
-              // Handle view gallery
-            }}
-          >
-            <Image 
-              source={require('../../assets/icons/gallery.png')}
-              style={styles.actionButtonIcon}
-            />
-            <Text style={styles.actionButtonText}>View Gallery</Text>
+            <Text style={styles.actionButtonText}>Continue</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -119,7 +100,7 @@ const CreatedEventScreen = ({ route, navigation }) => {
       />
 
       {/* Bottom Navigation */}
-      <BottomNavBar />
+      {/* <BottomNavBar /> */}
     </View>
   );
 };
@@ -127,20 +108,31 @@ const CreatedEventScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1720',
+    backgroundColor: '#1A1720', // Solid background color
   },
   coverImage: {
     width: '100%',
-    height: '45%',
+    height: 250, // Adjust height as needed
     position: 'absolute',
+    top: 0,
+    zIndex: 1, // Ensure the image is on top
   },
   eventDetails: {
     flex: 1,
-    marginTop: 'auto',
-    backgroundColor: 'rgba(26, 23, 32, 0.95)',
+    marginTop: 200, // Adjust margin to position below the cover image
+    backgroundColor: '#242129', // Darker card background
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5, // Shadow effect for Android
+    zIndex: 2, // Ensure the card is above the background
   },
   eventTypeContainer: {
     backgroundColor: 'rgba(139, 127, 255, 0.2)',
@@ -161,24 +153,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 24,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    marginBottom: 32,
-    gap: 40,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    color: '#8B7FFF',
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  statLabel: {
-    color: '#9E9E9E',
-    fontSize: 16,
-  },
   infoSection: {
     gap: 24,
   },
@@ -188,8 +162,8 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   infoIcon: {
-    width: 24,
-    height: 24,
+    width: 28, // Slightly larger icons
+    height: 28,
   },
   infoLabel: {
     color: '#9E9E9E',
@@ -209,25 +183,12 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 16,
     borderRadius: 12,
-    gap: 8,
-  },
-  inviteButton: {
-    backgroundColor: '#8B7FFF',
-  },
-  galleryButton: {
-    backgroundColor: 'rgba(139, 127, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: '#8B7FFF',
-  },
-  actionButtonIcon: {
-    width: 20,
-    height: 20,
-    tintColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8B7FFF', // Button color
+    elevation: 3, // Shadow effect for buttons
   },
   actionButtonText: {
     color: '#FFFFFF',
