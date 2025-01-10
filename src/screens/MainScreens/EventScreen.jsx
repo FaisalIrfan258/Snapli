@@ -147,6 +147,7 @@ const EventsScreen = () => {
   const [createEventModalVisible, setCreateEventModalVisible] = useState(false);
   const [inviteGuestsModalVisible, setInviteGuestsModalVisible] = useState(false);
   const [selectedEventData, setSelectedEventData] = useState(null);
+  const [capturedImages, setCapturedImages] = useState([]);
 
   const handleCameraPress = async (event) => {
     const options = {
@@ -163,14 +164,14 @@ const EventsScreen = () => {
       } else {
         // Handle the image response here
         console.log('Image URI: ', response.assets[0].uri);
-        // You can now use the image URI as needed
+        setCapturedImages((prevImages) => [...prevImages, response.assets[0].uri]);
       }
     });
   };
 
-  const handleGalleryPress = (event) => {
-    // Handle gallery action
-    navigation.navigate('Gallery', { eventId: event.id });
+  const handleGalleryPress = () => {
+    // Navigate to Gallery and pass captured images
+    navigation.navigate('Gallery', { images: capturedImages });
   };
 
   const handleInvitePress = (event) => {

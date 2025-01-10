@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import BottomNavBar from '../../components/BottomNavBar';
 
 const MenuItem = ({ icon, title, onPress }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress}>
@@ -81,24 +82,22 @@ const ProfileScreen = () => {
 
         {/* Account Section */}
         <View style={styles.section}>
-          {/* <Text style={styles.sectionTitle}>Account</Text> */}
           <View style={styles.menuContainer}>
-            {/* <MenuItem 
+            <MenuItem 
               icon={<Text style={styles.menuIcon}>👤</Text>}
               title="Edit Profile"
               onPress={() => navigation.navigate('EditProfile')}
-            /> */}
-            {/* <MenuItem 
+            />
+            <MenuItem 
               icon={<Text style={styles.menuIcon}>🔒</Text>}
               title="Privacy"
               onPress={() => navigation.navigate('Privacy')}
-            /> */}
+            />
           </View>
         </View>
 
         {/* Support Section */}
         <View style={styles.section}>
-          {/* <Text style={styles.sectionTitle}>Support</Text> */}
           <View style={styles.menuContainer}>
             <MenuItem 
               icon={<Text style={styles.menuIcon}>❓</Text>}
@@ -126,6 +125,8 @@ const ProfileScreen = () => {
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <BottomNavBar />
     </SafeAreaView>
   );
 };
