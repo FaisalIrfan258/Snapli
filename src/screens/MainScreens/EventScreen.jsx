@@ -157,14 +157,17 @@ const EventsScreen = () => {
     };
 
     launchCamera(options, (response) => {
+      console.log('Camera response:', response);
+
       if (response.didCancel) {
         console.log('User cancelled camera');
       } else if (response.error) {
         console.error('Camera error: ', response.error);
-      } else {
-        // Handle the image response here
+      } else if (response.assets && response.assets.length > 0) {
         console.log('Image URI: ', response.assets[0].uri);
         setCapturedImages((prevImages) => [...prevImages, response.assets[0].uri]);
+      } else {
+        console.error('Unexpected response structure: ', response);
       }
     });
   };
@@ -214,6 +217,8 @@ const EventsScreen = () => {
     
     // Add more events as needed
   ];
+
+  console.log('Captured Images:', capturedImages);
 
   return (
     <SafeAreaView style={styles.container}>
