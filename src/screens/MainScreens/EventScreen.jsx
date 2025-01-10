@@ -12,8 +12,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import InviteGuestsModal from '../../components/InviteGuestsModal';
 import CreateEventModal from '../../components/CreateEventModal';
+import firestore from '@react-native-firebase/firestore';
 
-const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress }) => (
+const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress, onDeletePress, onUpdatePress }) => (
   <View>
     <TouchableOpacity style={styles.eventCard} onPress={onPress}>
       {event.coverImage ? (
@@ -113,6 +114,28 @@ const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePres
         />
         <Text style={styles.actionText}>Invite</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.actionButton} 
+        onPress={onUpdatePress}
+      >
+        <Image 
+          source={require('../../assets/icons/edit.png')}
+          style={styles.actionIcon}
+        />
+        <Text style={styles.actionText}>Update</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.actionButton} 
+        onPress={onDeletePress}
+      >
+        <Image 
+          source={require('../../assets/icons/delete.png')}
+          style={styles.actionIcon}
+        />
+        <Text style={styles.actionText}>Delete</Text>
+      </TouchableOpacity>
     </View>
   </View>
 );
@@ -138,6 +161,21 @@ const EventsScreen = () => {
   };
 
   const handleCreateEvent = () => {
+    setCreateEventModalVisible(true);
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await firestore().collection('events').doc(eventId).delete();
+      Alert.alert('Success', 'Event deleted successfully');
+    } catch (error) {
+      console.error("Error deleting event: ", error);
+      Alert.alert('Error', 'Failed to delete event');
+    }
+  };
+
+  const handleUpdatePress = (event) => {
+    setSelectedEventData(event);
     setCreateEventModalVisible(true);
   };
 
@@ -184,6 +222,8 @@ const EventsScreen = () => {
               onCameraPress={() => handleCameraPress(event)}
               onGalleryPress={() => handleGalleryPress(event)}
               onInvitePress={() => handleInvitePress(event)}
+              onUpdatePress={() => handleUpdatePress(event)}
+              onDeletePress={() => handleDeleteEvent(event.id)}
             />
           ))}
         </View>
