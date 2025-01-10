@@ -1,6 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+
+// Import your icons
+import calendarIcon from '../assets/icons/calender.png'; // Adjust the path as necessary
+import cameraIcon from '../assets/icons/camera.png'; // Adjust the path as necessary
+import profileIcon from '../assets/icons/profile.png'; // Adjust the path as necessary
 
 const BottomNavBar = () => {
   const navigation = useNavigation();
@@ -14,7 +19,10 @@ const BottomNavBar = () => {
         style={styles.tab} 
         onPress={() => navigation.navigate('HomeScreen')}
       >
-        <Text style={[styles.icon, isActive('Events') && styles.activeIcon]}>📅</Text>
+        <Image 
+          source={calendarIcon} 
+          style={[styles.icon, isActive('Events') && styles.activeIcon]} 
+        />
         {/* <Text style={[styles.label, isActive('Events') && styles.activeLabel]}>Events</Text> */}
       </TouchableOpacity>
 
@@ -22,7 +30,10 @@ const BottomNavBar = () => {
         style={styles.tab}
         onPress={() => navigation.navigate('Event')}
       >
-        <Text style={[styles.icon, isActive('Camera') && styles.activeIcon]}>📸</Text>
+        <Image 
+          source={cameraIcon} 
+          style={[styles.icon, isActive('Camera') && styles.activeIcon]} 
+        />
         {/* <Text style={[styles.label, isActive('Camera') && styles.activeLabel]}>Camera</Text> */}
       </TouchableOpacity>
 
@@ -30,7 +41,10 @@ const BottomNavBar = () => {
         style={styles.tab}
         onPress={() => navigation.navigate('Profile')}
       >
-        <Text style={[styles.icon, isActive('Profile') && styles.activeIcon]}>👤</Text>
+        <Image 
+          source={profileIcon} 
+          style={[styles.icon, isActive('Profile') && styles.activeIcon]} 
+        />
         {/* <Text style={[styles.label, isActive('Profile') && styles.activeLabel]}>Profile</Text> */}
       </TouchableOpacity>
     </View>
@@ -51,16 +65,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    fontSize: 24,
+    width: 30, // Set the width of the icon
+    height: 30, // Set the height of the icon
     marginBottom: 4,
-    color: '#666',
+    tintColor: '#666', // Use tintColor for color change
+  },
+  activeIcon: {
+    tintColor: '#8B7FFF', // Change color when active
   },
   label: {
     fontSize: 12,
     color: '#666',
-  },
-  activeIcon: {
-    color: '#8B7FFF',
   },
   activeLabel: {
     color: '#8B7FFF',

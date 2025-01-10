@@ -12,7 +12,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import InviteGuestsModal from '../../components/InviteGuestsModal';
 import CreateEventModal from '../../components/CreateEventModal';
+import BottomNavBar from '../../components/BottomNavBar';
 import firestore from '@react-native-firebase/firestore';
+import { launchCamera } from 'react-native-image-picker';
 
 const EventCard = ({ event, onPress, onCameraPress, onGalleryPress, onInvitePress, onDeletePress, onUpdatePress }) => (
   <View>
@@ -147,7 +149,23 @@ const EventsScreen = () => {
   const [selectedEventData, setSelectedEventData] = useState(null);
 
   const handleCameraPress = async (event) => {
-   
+    const options = {
+      mediaType: 'photo',
+      cameraType: 'back',
+      quality: 1,
+    };
+
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled camera');
+      } else if (response.error) {
+        console.error('Camera error: ', response.error);
+      } else {
+        // Handle the image response here
+        console.log('Image URI: ', response.assets[0].uri);
+        // You can now use the image URI as needed
+      }
+    });
   };
 
   const handleGalleryPress = (event) => {
@@ -239,6 +257,8 @@ const EventsScreen = () => {
         onClose={() => setInviteGuestsModalVisible(false)}
         eventData={selectedEventData}
       />
+
+      <BottomNavBar />
     </SafeAreaView>
   );
 };
